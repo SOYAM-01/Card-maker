@@ -4,12 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Card Creator</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Special+Elite&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
     body { background: #f8fafc; font-family: sans-serif; }
     .card-font { font-family: 'Playfair Display', serif; }
+    .card-font-special { font-family: 'Special Elite', cursive; }
     .custom-card {
       border-radius: 20px;
       transition: width 0.3s ease, height 0.3s ease;
@@ -84,7 +87,18 @@
       </div>
     </div>
 
-    <!-- Card Preview -->
+    <!-- Font Picker -->
+    <div class="mt-4">
+      <label class="text-[10px] font-bold text-slate-400 uppercase ml-1 block mb-1">Font Style</label>
+      <div class="flex gap-2">
+        <button id="btnPlayfair" onclick="setFont('playfair')"
+          class="font-btn active flex-1 py-2 rounded-lg text-sm font-semibold border border-slate-200 bg-slate-900 text-white"
+          style="font-family:'Playfair Display',serif;">Playfair</button>
+        <button id="btnSpecial" onclick="setFont('special')"
+          class="font-btn flex-1 py-2 rounded-lg text-sm font-semibold border border-slate-200 bg-slate-50 text-slate-700"
+          style="font-family:'Special Elite',cursive;">Special Elite</button>
+      </div>
+    </div>
     <div class="flex flex-col items-center py-8 bg-slate-50 rounded-2xl mt-6 border-2 border-dashed border-slate-200 overflow-auto">
       <div id="captureArea"
         class="custom-card relative bg-white flex items-center justify-center text-center border-[8px] border-slate-200"
@@ -138,6 +152,27 @@
       statusMsg.classList.add('hidden');
       autoFitText();
     });
+
+    function setFont(val) {
+      const btnP = document.getElementById('btnPlayfair');
+      const btnS = document.getElementById('btnSpecial');
+      if (val === 'special') {
+        displayTxt.classList.remove('card-font');
+        displayTxt.classList.add('card-font-special');
+        btnS.classList.add('bg-slate-900', 'text-white');
+        btnS.classList.remove('bg-slate-50', 'text-slate-700');
+        btnP.classList.remove('bg-slate-900', 'text-white');
+        btnP.classList.add('bg-slate-50', 'text-slate-700');
+      } else {
+        displayTxt.classList.add('card-font');
+        displayTxt.classList.remove('card-font-special');
+        btnP.classList.add('bg-slate-900', 'text-white');
+        btnP.classList.remove('bg-slate-50', 'text-slate-700');
+        btnS.classList.remove('bg-slate-900', 'text-white');
+        btnS.classList.add('bg-slate-50', 'text-slate-700');
+      }
+      autoFitText();
+    }
 
     function setTheme(bg, text, border) {
       card.style.backgroundColor = bg;
