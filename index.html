@@ -26,6 +26,17 @@
     .theme-btn:hover { transform: scale(1.2); }
     .layout-btn { transition: all 0.2s; }
     .layout-btn.active { background: #1e293b; color: white; }
+
+    /* Auto-fit text inside card */
+    #captureArea {
+      overflow: hidden;
+    }
+    #displayTxt {
+      display: block;
+      width: 100%;
+      word-break: break-word;
+      overflow-wrap: break-word;
+    }
   </style>
 </head>
 <body class="p-4 flex flex-col items-center min-h-screen">
@@ -99,10 +110,33 @@
     const card = document.getElementById('captureArea');
     const statusMsg = document.getElementById('statusMsg');
 
+    // Auto-fit font size so text never overflows the card
+    function autoFitText() {
+      const padding = 64; // 2rem padding on each side = ~32px x2
+      const borderWidth = 16; // 8px border x2
+      const maxWidth = card.offsetWidth - padding - borderWidth;
+      const maxHeight = card.offsetHeight - padding - borderWidth;
+
+      let fontSize = 22; // start size in px
+      const minFontSize = 9;
+
+      displayTxt.style.fontSize = fontSize + 'px';
+
+      // Shrink font until text fits within card bounds
+      while (
+        (displayTxt.scrollHeight > maxHeight || displayTxt.scrollWidth > maxWidth) &&
+        fontSize > minFontSize
+      ) {
+        fontSize -= 0.5;
+        displayTxt.style.fontSize = fontSize + 'px';
+      }
+    }
+
     // Live preview
     textInp.addEventListener('input', (e) => {
       displayTxt.innerText = e.target.value || "Apna Text";
       statusMsg.classList.add('hidden');
+      autoFitText();
     });
 
     function setTheme(bg, text, border) {
@@ -128,6 +162,9 @@
         btnH.classList.remove('active', 'bg-slate-900', 'text-white');
         btnH.classList.add('bg-slate-50', 'text-slate-700');
       }
+
+      // Re-fit text after layout change
+      setTimeout(autoFitText, 350);
     }
 
     function downloadImage() {
@@ -135,7 +172,6 @@
       btn.innerText = 'Generating... ⏳';
       btn.disabled = true;
 
-      // Small delay to let layout settle after any recent change
       setTimeout(() => {
         html2canvas(card, {
           scale: 3,
@@ -143,7 +179,6 @@
           logging: false,
           backgroundColor: null
         }).then(canvas => {
-          // Create download link
           const link = document.createElement('a');
           link.download = 'my-card.png';
           link.href = canvas.toDataURL('image/png');
