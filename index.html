@@ -99,6 +99,14 @@
           style="font-family:'Special Elite',cursive;">Special Elite</button>
       </div>
     </div>
+    <!-- Random Layout Button -->
+    <div class="mt-4">
+      <button onclick="randomLayout()"
+        class="w-full py-2 rounded-xl text-sm font-bold border-2 border-dashed border-purple-300 bg-purple-50 text-purple-700 hover:bg-purple-100 active:scale-95 transition-all">
+        🎲 Random Layout
+      </button>
+    </div>
+
     <div class="flex flex-col items-center py-8 bg-slate-50 rounded-2xl mt-6 border-2 border-dashed border-slate-200 overflow-auto">
       <div id="captureArea"
         class="custom-card relative bg-white flex items-center justify-center text-center border-[8px] border-slate-200"
@@ -200,6 +208,56 @@
 
       // Re-fit text after layout change
       setTimeout(autoFitText, 350);
+    }
+
+    function randomLayout() {
+      const themes = [
+        ['#ffffff','#1e293b','#e2e8f0'],
+        ['#fef2f2','#991b1b','#fecaca'],
+        ['#f0f9ff','#075985','#bae6fd'],
+        ['#1e293b','#f8fafc','#475569'],
+        ['#fefce8','#854d0e','#fde68a'],
+        ['#f0fdf4','#166534','#bbf7d0'],
+        ['#fdf4ff','#6b21a8','#e9d5ff'],
+        ['#fff7ed','#9a3412','#fed7aa'],
+      ];
+      const aligns = ['text-left', 'text-center', 'text-right'];
+      const paddings = ['1rem', '1.5rem', '2rem', '2.5rem'];
+      const radii = ['8px', '16px', '24px', '32px', '50px'];
+      const borderWidths = ['4px', '6px', '8px', '10px', '12px'];
+      const layouts = ['V', 'H'];
+      const fonts = ['playfair', 'special'];
+
+      // Pick random values
+      const theme = themes[Math.floor(Math.random() * themes.length)];
+      const align = aligns[Math.floor(Math.random() * aligns.length)];
+      const padding = paddings[Math.floor(Math.random() * paddings.length)];
+      const radius = radii[Math.floor(Math.random() * radii.length)];
+      const borderW = borderWidths[Math.floor(Math.random() * borderWidths.length)];
+      const layout = layouts[Math.floor(Math.random() * layouts.length)];
+      const font = fonts[Math.floor(Math.random() * fonts.length)];
+
+      // Apply layout
+      setLayout(layout);
+
+      // Apply theme
+      setTheme(...theme);
+
+      // Apply font
+      setFont(font);
+
+      // Apply random style tweaks
+      setTimeout(() => {
+        card.style.padding = padding;
+        card.style.borderRadius = radius;
+        card.style.borderWidth = borderW;
+
+        // Apply text alignment
+        displayTxt.classList.remove('text-left', 'text-center', 'text-right');
+        displayTxt.classList.add(align);
+
+        autoFitText();
+      }, 360);
     }
 
     function downloadImage() {
