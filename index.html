@@ -225,39 +225,27 @@
       const paddings = ['1rem', '1.5rem', '2rem', '2.5rem'];
       const radii = ['8px', '16px', '24px', '32px', '50px'];
       const borderWidths = ['4px', '6px', '8px', '10px', '12px'];
-      const layouts = ['V', 'H'];
-      const fonts = ['playfair', 'special'];
 
-      // Pick random values
+      // Pick random values — font and format (layout) are kept as currently selected
       const theme = themes[Math.floor(Math.random() * themes.length)];
       const align = aligns[Math.floor(Math.random() * aligns.length)];
       const padding = paddings[Math.floor(Math.random() * paddings.length)];
       const radius = radii[Math.floor(Math.random() * radii.length)];
       const borderW = borderWidths[Math.floor(Math.random() * borderWidths.length)];
-      const layout = layouts[Math.floor(Math.random() * layouts.length)];
-      const font = fonts[Math.floor(Math.random() * fonts.length)];
 
-      // Apply layout
-      setLayout(layout);
-
-      // Apply theme
+      // Apply theme only
       setTheme(...theme);
 
-      // Apply font
-      setFont(font);
-
       // Apply random style tweaks
-      setTimeout(() => {
-        card.style.padding = padding;
-        card.style.borderRadius = radius;
-        card.style.borderWidth = borderW;
+      card.style.padding = padding;
+      card.style.borderRadius = radius;
+      card.style.borderWidth = borderW;
 
-        // Apply text alignment
-        displayTxt.classList.remove('text-left', 'text-center', 'text-right');
-        displayTxt.classList.add(align);
+      // Apply text alignment
+      displayTxt.classList.remove('text-left', 'text-center', 'text-right');
+      displayTxt.classList.add(align);
 
-        autoFitText();
-      }, 360);
+      autoFitText();
     }
 
     function downloadImage() {
